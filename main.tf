@@ -1,18 +1,14 @@
-terraform {
-  required_providers {
-    snowflake = {
-      source  = "Snowflake-Labs/snowflake"
-      version = "~> 0.59"
-    }
-  }
-}
-
-provider "snowflake" {
-  role  = "SYSADMIN"
-}
-
 resource "snowflake_database" "db" {
   name     = "SECURITY_DATA_LAKE"
+  comment = "Demo database for security data lake"
+
+}
+
+
+resource "snowflake_schema" "schema" {
+    database   = snowflake_database.db.name
+    name       = "SDL"
+    is_managed = false
 }
 
 resource "snowflake_warehouse" "warehouse" {
@@ -22,3 +18,4 @@ resource "snowflake_warehouse" "warehouse" {
   query_acceleration_max_scale_factor = 0
   auto_suspend = 60
 }
+
